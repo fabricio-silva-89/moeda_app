@@ -1,0 +1,2 @@
+/Users/fabricio/repositories/moeda_app/android/app/.cxx/Debug/2p591w5o/x86/CMakeFiles/edit_cache.dir
+/Users/fabricio/repositories/moeda_app/android/app/.cxx/Debug/2p591w5o/x86/CMakeFiles/rebuild_cache.dir
