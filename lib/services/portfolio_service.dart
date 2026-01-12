@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../models/portfolio_model.dart';
 
 class PortfolioService {
@@ -27,7 +28,8 @@ class PortfolioService {
           .get();
 
       if (snapshot.docs.isNotEmpty) {
-        return Portfolio.fromMap(snapshot.docs.first.data(), snapshot.docs.first.id);
+        return Portfolio.fromMap(
+            snapshot.docs.first.data(), snapshot.docs.first.id);
       }
       return null;
     } on FirebaseException catch (e) {
@@ -44,7 +46,8 @@ class PortfolioService {
         .snapshots()
         .map((snapshot) {
       if (snapshot.docs.isNotEmpty) {
-        return Portfolio.fromMap(snapshot.docs.first.data(), snapshot.docs.first.id);
+        return Portfolio.fromMap(
+            snapshot.docs.first.data(), snapshot.docs.first.id);
       }
       return null;
     });
@@ -57,9 +60,9 @@ class PortfolioService {
           .collection(portfoliosCollection)
           .doc(portfolio.id)
           .update({
-            ...portfolio.toMap(),
-            'updatedAt': DateTime.now().toIso8601String(),
-          });
+        ...portfolio.toMap(),
+        'updatedAt': DateTime.now().toIso8601String(),
+      });
     } on FirebaseException catch (e) {
       throw 'Erro ao atualizar portfólio: ${e.message}';
     }
@@ -76,10 +79,10 @@ class PortfolioService {
           .collection(portfoliosCollection)
           .doc(portfolioId)
           .update({
-            'totalInvested': totalInvested,
-            'currentValue': currentValue,
-            'updatedAt': DateTime.now().toIso8601String(),
-          });
+        'totalInvested': totalInvested,
+        'currentValue': currentValue,
+        'updatedAt': DateTime.now().toIso8601String(),
+      });
     } on FirebaseException catch (e) {
       throw 'Erro ao atualizar valores: ${e.message}';
     }
@@ -95,9 +98,9 @@ class PortfolioService {
           .collection(portfoliosCollection)
           .doc(portfolioId)
           .update({
-            'allocationPercentages': percentages,
-            'updatedAt': DateTime.now().toIso8601String(),
-          });
+        'allocationPercentages': percentages,
+        'updatedAt': DateTime.now().toIso8601String(),
+      });
     } on FirebaseException catch (e) {
       throw 'Erro ao atualizar alocações: ${e.message}';
     }
@@ -106,10 +109,7 @@ class PortfolioService {
   /// Deletar portfólio
   Future<void> deletePortfolio(String id) async {
     try {
-      await _firestore
-          .collection(portfoliosCollection)
-          .doc(id)
-          .delete();
+      await _firestore.collection(portfoliosCollection).doc(id).delete();
     } on FirebaseException catch (e) {
       throw 'Erro ao deletar portfólio: ${e.message}';
     }

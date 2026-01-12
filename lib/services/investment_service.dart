@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../models/investment_model.dart';
 
 class InvestmentService {
@@ -20,10 +21,8 @@ class InvestmentService {
   /// Obter investimento por ID
   Future<Investment?> getInvestment(String id) async {
     try {
-      final doc = await _firestore
-          .collection(investmentsCollection)
-          .doc(id)
-          .get();
+      final doc =
+          await _firestore.collection(investmentsCollection).doc(id).get();
 
       if (doc.exists) {
         return Investment.fromMap(doc.data() as Map<String, dynamic>, id);
@@ -70,9 +69,9 @@ class InvestmentService {
           .collection(investmentsCollection)
           .doc(investment.id)
           .update({
-            ...investment.toMap(),
-            'updatedAt': DateTime.now().toIso8601String(),
-          });
+        ...investment.toMap(),
+        'updatedAt': DateTime.now().toIso8601String(),
+      });
     } on FirebaseException catch (e) {
       throw 'Erro ao atualizar investimento: ${e.message}';
     }
@@ -81,10 +80,7 @@ class InvestmentService {
   /// Deletar investimento
   Future<void> deleteInvestment(String id) async {
     try {
-      await _firestore
-          .collection(investmentsCollection)
-          .doc(id)
-          .delete();
+      await _firestore.collection(investmentsCollection).doc(id).delete();
     } on FirebaseException catch (e) {
       throw 'Erro ao deletar investimento: ${e.message}';
     }
@@ -100,9 +96,9 @@ class InvestmentService {
           .collection(investmentsCollection)
           .doc(investmentId)
           .update({
-            'percentage': percentage,
-            'updatedAt': DateTime.now().toIso8601String(),
-          });
+        'percentage': percentage,
+        'updatedAt': DateTime.now().toIso8601String(),
+      });
     } on FirebaseException catch (e) {
       throw 'Erro ao atualizar porcentagem: ${e.message}';
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../models/investment_model.dart';
 
 class AllocationWidget extends StatelessWidget {
@@ -64,7 +65,7 @@ class AllocationWidget extends StatelessWidget {
                   ],
                 ),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

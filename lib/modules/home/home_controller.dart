@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../models/investment_model.dart';
 import '../../models/portfolio_model.dart';
 import '../../models/stock_model.dart';
@@ -24,7 +25,8 @@ class HomeController extends ChangeNotifier {
   Portfolio? get portfolio => _portfolio;
   List<Investment> get investments => _investments;
   List<Stock> get stocks => _stocks;
-  List<transaction_model.Transaction> get recentTransactions => _recentTransactions;
+  List<transaction_model.Transaction> get recentTransactions =>
+      _recentTransactions;
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
 
@@ -38,14 +40,14 @@ class HomeController extends ChangeNotifier {
       final portfolio = await _portfolioService.getUserPortfolio(userId);
       final investments = await _investmentService.getUserInvestments(userId);
       final stocks = await _stockService.getUserStocks(userId);
-      final transactions = await _transactionService.getUserTransactions(userId);
+      final transactions =
+          await _transactionService.getUserTransactions(userId);
 
       _portfolio = portfolio;
       _investments = investments;
       _stocks = stocks;
-      _recentTransactions = transactions.length > 5
-          ? transactions.sublist(0, 5)
-          : transactions;
+      _recentTransactions =
+          transactions.length > 5 ? transactions.sublist(0, 5) : transactions;
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -58,7 +60,8 @@ class HomeController extends ChangeNotifier {
   /// Criar portfólio inicial (se não existir)
   Future<void> createInitialPortfolio(String userId) async {
     try {
-      final existingPortfolio = await _portfolioService.getUserPortfolio(userId);
+      final existingPortfolio =
+          await _portfolioService.getUserPortfolio(userId);
 
       if (existingPortfolio == null) {
         final newPortfolio = Portfolio(

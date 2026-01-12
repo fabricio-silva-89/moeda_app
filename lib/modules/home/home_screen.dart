@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../home/home_controller.dart';
-import '../../widgets/portfolio_summary_widget.dart';
+import '../../services/auth_service.dart';
 import '../../widgets/allocation_widget.dart';
+import '../../widgets/portfolio_summary_widget.dart';
 import '../../widgets/recent_transactions_widget.dart';
 import '../contribution_config/contribution_config_screen.dart';
+import '../home/home_controller.dart';
+import '../login/login_screen.dart';
+import '../settings/settings_screen.dart';
 import '../stock_tracking/stock_tracking_screen.dart';
 import '../transaction_history/transaction_history_screen.dart';
-import '../settings/settings_screen.dart';
-import '../../services/auth_service.dart';
-import '../login/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

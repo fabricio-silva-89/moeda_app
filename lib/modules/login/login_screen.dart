@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../login/login_controller.dart';
 import '../home/home_screen.dart';
-import 'signup_screen.dart';
+import '../login/login_controller.dart';
+import '../signup/signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (controller.errorMessage != null)
                       Container(
@@ -61,7 +61,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             GestureDetector(
                               onTap: controller.clearError,
-                              child: Icon(Icons.close, color: Colors.red.shade700),
+                              child:
+                                  Icon(Icons.close, color: Colors.red.shade700),
                             ),
                           ],
                         ),

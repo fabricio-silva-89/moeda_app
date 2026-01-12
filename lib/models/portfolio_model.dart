@@ -29,7 +29,8 @@ class Portfolio {
       userId: map['userId'] ?? '',
       totalInvested: (map['totalInvested'] ?? 0).toDouble(),
       currentValue: (map['currentValue'] ?? 0).toDouble(),
-      allocationPercentages: _parseAllocationPercentages(map['allocationPercentages']),
+      allocationPercentages:
+          _parseAllocationPercentages(map['allocationPercentages']),
       createdAt: map['createdAt'] != null
           ? DateTime.parse(map['createdAt'])
           : DateTime.now(),
@@ -39,14 +40,13 @@ class Portfolio {
     );
   }
 
-  static Map<InvestmentType, double> _parseAllocationPercentages(
-      dynamic data) {
+  static Map<InvestmentType, double> _parseAllocationPercentages(dynamic data) {
     if (data == null) return {};
     final map = <InvestmentType, double>{};
     if (data is Map) {
       data.forEach((key, value) {
-        final type = InvestmentType.values
-            .firstWhere((e) => e.name == key, orElse: () => InvestmentType.rendalixo);
+        final type = InvestmentType.values.firstWhere((e) => e.name == key,
+            orElse: () => InvestmentType.rendalixo);
         map[type] = (value ?? 0).toDouble();
       });
     }
@@ -58,8 +58,8 @@ class Portfolio {
       'userId': userId,
       'totalInvested': totalInvested,
       'currentValue': currentValue,
-      'allocationPercentages': allocationPercentages
-          .map((key, value) => MapEntry(key.name, value)),
+      'allocationPercentages':
+          allocationPercentages.map((key, value) => MapEntry(key.name, value)),
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
     };

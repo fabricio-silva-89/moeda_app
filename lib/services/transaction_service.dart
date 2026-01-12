@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../models/transaction_model.dart' as transaction_model;
 
 class TransactionService {
@@ -6,7 +7,8 @@ class TransactionService {
   static const String transactionsCollection = 'transactions';
 
   /// Criar nova transação
-  Future<String> createTransaction(transaction_model.Transaction transaction) async {
+  Future<String> createTransaction(
+      transaction_model.Transaction transaction) async {
     try {
       final docRef = await _firestore
           .collection(transactionsCollection)
@@ -20,13 +22,12 @@ class TransactionService {
   /// Obter transação por ID
   Future<transaction_model.Transaction?> getTransaction(String id) async {
     try {
-      final doc = await _firestore
-          .collection(transactionsCollection)
-          .doc(id)
-          .get();
+      final doc =
+          await _firestore.collection(transactionsCollection).doc(id).get();
 
       if (doc.exists) {
-        return transaction_model.Transaction.fromMap(doc.data() as Map<String, dynamic>, id);
+        return transaction_model.Transaction.fromMap(
+            doc.data() as Map<String, dynamic>, id);
       }
       return null;
     } on FirebaseException catch (e) {
@@ -35,7 +36,8 @@ class TransactionService {
   }
 
   /// Obter todas as transações do usuário
-  Future<List<transaction_model.Transaction>> getUserTransactions(String userId) async {
+  Future<List<transaction_model.Transaction>> getUserTransactions(
+      String userId) async {
     try {
       final snapshot = await _firestore
           .collection(transactionsCollection)
@@ -44,7 +46,8 @@ class TransactionService {
           .get();
 
       return snapshot.docs
-          .map((doc) => transaction_model.Transaction.fromMap(doc.data(), doc.id))
+          .map((doc) =>
+              transaction_model.Transaction.fromMap(doc.data(), doc.id))
           .toList();
     } on FirebaseException catch (e) {
       throw 'Erro ao obter transações: ${e.message}';
@@ -52,7 +55,8 @@ class TransactionService {
   }
 
   /// Obter stream de transações do usuário
-  Stream<List<transaction_model.Transaction>> getUserTransactionsStream(String userId) {
+  Stream<List<transaction_model.Transaction>> getUserTransactionsStream(
+      String userId) {
     return _firestore
         .collection(transactionsCollection)
         .where('userId', isEqualTo: userId)
@@ -60,7 +64,8 @@ class TransactionService {
         .snapshots()
         .map((snapshot) {
       return snapshot.docs
-          .map((doc) => transaction_model.Transaction.fromMap(doc.data(), doc.id))
+          .map((doc) =>
+              transaction_model.Transaction.fromMap(doc.data(), doc.id))
           .toList();
     });
   }
@@ -79,7 +84,8 @@ class TransactionService {
           .get();
 
       return snapshot.docs
-          .map((doc) => transaction_model.Transaction.fromMap(doc.data(), doc.id))
+          .map((doc) =>
+              transaction_model.Transaction.fromMap(doc.data(), doc.id))
           .toList();
     } on FirebaseException catch (e) {
       throw 'Erro ao obter transações: ${e.message}';
@@ -103,7 +109,8 @@ class TransactionService {
           .get();
 
       return snapshot.docs
-          .map((doc) => transaction_model.Transaction.fromMap(doc.data(), doc.id))
+          .map((doc) =>
+              transaction_model.Transaction.fromMap(doc.data(), doc.id))
           .toList();
     } on FirebaseException catch (e) {
       throw 'Erro ao obter transações: ${e.message}';
@@ -111,7 +118,8 @@ class TransactionService {
   }
 
   /// Atualizar transação
-  Future<void> updateTransaction(transaction_model.Transaction transaction) async {
+  Future<void> updateTransaction(
+      transaction_model.Transaction transaction) async {
     try {
       await _firestore
           .collection(transactionsCollection)
@@ -125,10 +133,7 @@ class TransactionService {
   /// Deletar transação
   Future<void> deleteTransaction(String id) async {
     try {
-      await _firestore
-          .collection(transactionsCollection)
-          .doc(id)
-          .delete();
+      await _firestore.collection(transactionsCollection).doc(id).delete();
     } on FirebaseException catch (e) {
       throw 'Erro ao deletar transação: ${e.message}';
     }

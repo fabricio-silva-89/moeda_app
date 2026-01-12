@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import '../models/transaction_model.dart' as transaction_model;
 
 class RecentTransactionsWidget extends StatelessWidget {

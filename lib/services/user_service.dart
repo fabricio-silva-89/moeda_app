@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../models/user_model.dart';
 
 class UserService {
@@ -20,10 +21,7 @@ class UserService {
   /// Obter usuário por UID
   Future<User?> getUser(String uid) async {
     try {
-      final doc = await _firestore
-          .collection(usersCollection)
-          .doc(uid)
-          .get();
+      final doc = await _firestore.collection(usersCollection).doc(uid).get();
 
       if (doc.exists) {
         return User.fromMap(doc.data() as Map<String, dynamic>, uid);
@@ -49,10 +47,7 @@ class UserService {
   /// Deletar usuário
   Future<void> deleteUser(String uid) async {
     try {
-      await _firestore
-          .collection(usersCollection)
-          .doc(uid)
-          .delete();
+      await _firestore.collection(usersCollection).doc(uid).delete();
     } on FirebaseException catch (e) {
       throw 'Erro ao deletar usuário: ${e.message}';
     }

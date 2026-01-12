@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../models/stock_model.dart';
 
 class StockService {
@@ -8,9 +9,8 @@ class StockService {
   /// Criar nova ação
   Future<String> createStock(Stock stock) async {
     try {
-      final docRef = await _firestore
-          .collection(stocksCollection)
-          .add(stock.toMap());
+      final docRef =
+          await _firestore.collection(stocksCollection).add(stock.toMap());
       return docRef.id;
     } on FirebaseException catch (e) {
       throw 'Erro ao criar ação: ${e.message}';
@@ -20,10 +20,7 @@ class StockService {
   /// Obter ação por ID
   Future<Stock?> getStock(String id) async {
     try {
-      final doc = await _firestore
-          .collection(stocksCollection)
-          .doc(id)
-          .get();
+      final doc = await _firestore.collection(stocksCollection).doc(id).get();
 
       if (doc.exists) {
         return Stock.fromMap(doc.data() as Map<String, dynamic>, id);
@@ -83,13 +80,10 @@ class StockService {
   /// Atualizar ação
   Future<void> updateStock(Stock stock) async {
     try {
-      await _firestore
-          .collection(stocksCollection)
-          .doc(stock.id)
-          .update({
-            ...stock.toMap(),
-            'updatedAt': DateTime.now().toIso8601String(),
-          });
+      await _firestore.collection(stocksCollection).doc(stock.id).update({
+        ...stock.toMap(),
+        'updatedAt': DateTime.now().toIso8601String(),
+      });
     } on FirebaseException catch (e) {
       throw 'Erro ao atualizar ação: ${e.message}';
     }
@@ -98,10 +92,7 @@ class StockService {
   /// Deletar ação
   Future<void> deleteStock(String id) async {
     try {
-      await _firestore
-          .collection(stocksCollection)
-          .doc(id)
-          .delete();
+      await _firestore.collection(stocksCollection).doc(id).delete();
     } on FirebaseException catch (e) {
       throw 'Erro ao deletar ação: ${e.message}';
     }
@@ -113,13 +104,10 @@ class StockService {
     double percentage,
   ) async {
     try {
-      await _firestore
-          .collection(stocksCollection)
-          .doc(stockId)
-          .update({
-            'percentage': percentage,
-            'updatedAt': DateTime.now().toIso8601String(),
-          });
+      await _firestore.collection(stocksCollection).doc(stockId).update({
+        'percentage': percentage,
+        'updatedAt': DateTime.now().toIso8601String(),
+      });
     } on FirebaseException catch (e) {
       throw 'Erro ao atualizar porcentagem: ${e.message}';
     }
@@ -131,13 +119,10 @@ class StockService {
     double currentPrice,
   ) async {
     try {
-      await _firestore
-          .collection(stocksCollection)
-          .doc(stockId)
-          .update({
-            'currentPrice': currentPrice,
-            'updatedAt': DateTime.now().toIso8601String(),
-          });
+      await _firestore.collection(stocksCollection).doc(stockId).update({
+        'currentPrice': currentPrice,
+        'updatedAt': DateTime.now().toIso8601String(),
+      });
     } on FirebaseException catch (e) {
       throw 'Erro ao atualizar preço: ${e.message}';
     }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'signup_controller.dart';
 import '../login/login_screen.dart';
+import 'signup_controller.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -113,8 +113,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       const SizedBox(height: 16.0),
                       TextFormField(
-                        decoration: const InputDecoration(
-                            labelText: 'Confirmar Senha'),
+                        decoration:
+                            const InputDecoration(labelText: 'Confirmar Senha'),
                         controller: _confirmPasswordController,
                         obscureText: true,
                         validator: (value) {
