@@ -1,8 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'firebase_options.dart';
-import 'modules/login/login_screen.dart';
+import 'ma_binding.dart';
+import 'ma_pages.dart';
+import 'ma_routes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,13 +18,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Moeda App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const LoginScreen(),
+      getPages: MaPages.pages,
+      initialRoute: MaRoutes.login,
+      initialBinding: MaBinding(),
+      navigatorKey: Get.key,
     );
   }
 }

@@ -1,29 +1,28 @@
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../models/user_model.dart';
 import '../../services/auth_service.dart';
 import '../../services/user_service.dart';
 
-class LoginController extends ChangeNotifier {
-  final AuthService _authService = AuthService();
-  final UserService _userService = UserService();
+class LoginController extends GetxController {
+  final AuthService _authService = Get.find<AuthService>();
+  final UserService _userService = Get.find<UserService>();
 
-  bool _isLoading = false;
-  String? _errorMessage;
-  User? _user;
+  final _isLoading = false.obs;
+  final _errorMessage = Rxn<String>();
+  final _user = Rxn<User>();
 
-  bool get isLoading => _isLoading;
-  String? get errorMessage => _errorMessage;
-  User? get user => _user;
+  bool get isLoading => _isLoading.value;
+  String? get errorMessage => _errorMessage.value;
+  User? get user => _user.value;
 
   /// Fazer login
   Future<bool> login({
     required String email,
     required String password,
   }) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
+    _isLoading.value = true;
+    _errorMessage.value = null;
 
     try {
       final firebaseUser = await _authService.login(
@@ -32,23 +31,20 @@ class LoginController extends ChangeNotifier {
       );
 
       if (firebaseUser != null) {
-        _user = await _userService.getUser(firebaseUser.uid);
-        _isLoading = false;
-        notifyListeners();
+        _user.value = await _userService.getUser(firebaseUser.uid);
+        _isLoading.value = false;
         return true;
       }
       throw Exception('Falha ao fazer login');
     } catch (e) {
-      _errorMessage = e.toString();
-      _isLoading = false;
-      notifyListeners();
+      _errorMessage.value = e.toString();
+      _isLoading.value = false;
       return false;
     }
   }
 
   /// Limpar mensagem de erro
   void clearError() {
-    _errorMessage = null;
-    notifyListeners();
+    _errorMessage.value = null;
   }
 }
