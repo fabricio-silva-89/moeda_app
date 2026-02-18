@@ -7,7 +7,7 @@ class UserService {
   static const String usersCollection = 'users';
 
   /// Criar novo usuário no Firestore
-  Future<void> createUser(User user) async {
+  Future<void> createUser(UserModel user) async {
     try {
       await _firestore
           .collection(usersCollection)
@@ -19,12 +19,12 @@ class UserService {
   }
 
   /// Obter usuário por UID
-  Future<User?> getUser(String uid) async {
+  Future<UserModel?> getUser(String uid) async {
     try {
       final doc = await _firestore.collection(usersCollection).doc(uid).get();
 
       if (doc.exists) {
-        return User.fromMap(doc.data() as Map<String, dynamic>, uid);
+        return UserModel.fromMap(doc.data() as Map<String, dynamic>, uid);
       }
       return null;
     } on FirebaseException catch (e) {
@@ -33,7 +33,7 @@ class UserService {
   }
 
   /// Atualizar usuário
-  Future<void> updateUser(User user) async {
+  Future<void> updateUser(UserModel user) async {
     try {
       await _firestore
           .collection(usersCollection)
@@ -54,14 +54,14 @@ class UserService {
   }
 
   /// Obter stream de usuário em tempo real
-  Stream<User?> getUserStream(String uid) {
+  Stream<UserModel?> getUserStream(String uid) {
     return _firestore
         .collection(usersCollection)
         .doc(uid)
         .snapshots()
         .map((doc) {
       if (doc.exists) {
-        return User.fromMap(doc.data() as Map<String, dynamic>, uid);
+        return UserModel.fromMap(doc.data() as Map<String, dynamic>, uid);
       }
       return null;
     });

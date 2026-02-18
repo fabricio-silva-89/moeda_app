@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../ma_routes.dart';
+import '../../../ma_routes.dart';
 import 'signup_controller.dart';
 
 class SignupScreen extends GetView<SignupController> {
@@ -27,7 +27,8 @@ class SignupScreen extends GetView<SignupController> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-                'Cadastro realizado com sucesso! Faça login com suas credenciais.'),
+              'Cadastro realizado com sucesso! Faça login com suas credenciais.',
+            ),
           ),
         );
       }

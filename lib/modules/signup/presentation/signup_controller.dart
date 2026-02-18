@@ -1,25 +1,29 @@
 import 'package:get/get.dart';
 
-import '../../models/asset_model.dart';
-import '../../models/user_model.dart';
-import '../../services/asset_service.dart';
-import '../../services/auth_service.dart';
-import '../../services/user_service.dart';
+import '../domain/params/create_user_assets_params.dart';
+import '../domain/params/create_user_params.dart';
+import '../domain/params/register_params.dart';
+import '../domain/use_case/create_user_assets_use_case.dart';
+import '../domain/use_case/create_user_use_case.dart';
+import '../domain/use_case/register_use_case.dart';
 
 class SignupController extends GetxController {
-  final AuthService _authService = Get.find<AuthService>();
-  final UserService _userService = Get.find<UserService>();
-  final AssetService _assetService = Get.find<AssetService>();
+  final RegisterUseCase _registerUseCase;
+  final CreateUserUseCase _createUserUseCase;
+  final CreateUserAssetsUseCase _createUserAssetsUseCase;
+
+  SignupController(
+    this._registerUseCase,
+    this._createUserUseCase,
+    this._createUserAssetsUseCase,
+  );
 
   final _isLoading = false.obs;
-  final _errorMessage = Rxn<String>();
-  final _user = Rxn<User>();
-
   bool get isLoading => _isLoading.value;
-  String? get errorMessage => _errorMessage.value;
-  User? get user => _user.value;
 
-  /// Registrar novo usuário
+  final _errorMessage = Rxn<String>();
+  String? get errorMessage => _errorMessage.value;
+
   Future<bool> signup({
     required String email,
     required String password,
@@ -29,27 +33,26 @@ class SignupController extends GetxController {
     _errorMessage.value = null;
 
     try {
-      final firebaseUser = await _authService.register(
-        email: email,
-        password: password,
-        name: name,
+      final userId = await _registerUseCase.execute(
+        params: RegisterParams(
+          email: email,
+          password: password,
+          name: name,
+        ),
       );
 
-      if (firebaseUser != null) {
-        // Criar documento do usuário no Firestore
-        final user = User(
-          uid: firebaseUser.uid,
-          email: firebaseUser.email ?? email,
-          name: name,
-          createdAt: DateTime.now(),
+      if (userId != null) {
+        await _createUserUseCase.execute(
+          params: CreateUserParams(
+            uid: userId,
+            email: email,
+            name: name,
+            createdAt: DateTime.now(),
+          ),
         );
 
-        await _userService.createUser(user);
+        await _createDefaultAssets(userId);
 
-        // Criar assets padrão para o usuário
-        await _createDefaultAssets(user.uid);
-
-        _user.value = user;
         _isLoading.value = false;
         return true;
       }
@@ -61,59 +64,52 @@ class SignupController extends GetxController {
     }
   }
 
-  /// Limpar mensagem de erro
   void clearError() {
     _errorMessage.value = null;
   }
 
-  /// Criar assets padrão para o usuário
   Future<void> _createDefaultAssets(String userId) async {
     final now = DateTime.now();
     final defaultAssets = [
-      Asset(
+      CreateUserAssetsParams(
         userId: userId,
         name: 'Renda Fixa',
         type: 'renda_fixa',
         percentage: 20,
         createdAt: now,
-        updatedAt: now,
       ),
-      Asset(
+      CreateUserAssetsParams(
         userId: userId,
         name: 'Ações nacionais',
         type: 'acoes_nacionais',
         percentage: 20,
         createdAt: now,
-        updatedAt: now,
       ),
-      Asset(
+      CreateUserAssetsParams(
         userId: userId,
         name: 'Ações Internacionais',
         type: 'acoes_internacionais',
         percentage: 20,
         createdAt: now,
-        updatedAt: now,
       ),
-      Asset(
+      CreateUserAssetsParams(
         userId: userId,
         name: 'Fundos Imobiliários',
         type: 'fiis',
         percentage: 20,
         createdAt: now,
-        updatedAt: now,
       ),
-      Asset(
+      CreateUserAssetsParams(
         userId: userId,
         name: 'Criptomoedas',
         type: 'cripto',
         percentage: 20,
         createdAt: now,
-        updatedAt: now,
       ),
     ];
 
     for (final asset in defaultAssets) {
-      await _assetService.createAsset(asset);
+      await _createUserAssetsUseCase.execute(params: asset);
     }
   }
 }

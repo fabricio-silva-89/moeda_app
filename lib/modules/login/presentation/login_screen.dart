@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../ma_routes.dart';
+import '../../../ma_routes.dart';
 import 'login_controller.dart';
 
 class LoginScreen extends GetView<LoginController> {
