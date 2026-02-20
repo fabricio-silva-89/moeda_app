@@ -6,6 +6,7 @@ import 'firebase_options.dart';
 import 'ma_binding.dart';
 import 'ma_pages.dart';
 import 'ma_routes.dart';
+import 'ui/theme/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Moeda App',
+      theme: MaTheme.light(),
+      darkTheme: MaTheme.dark(),
+      themeMode: ThemeMode.system,
       getPages: MaPages.pages,
       initialRoute: MaRoutes.login,
       initialBinding: MaBinding(),
