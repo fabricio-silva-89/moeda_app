@@ -7,7 +7,7 @@ class WalletPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        title: const Text('Carteira'),
       ),
       body: Container(
         child: const Center(

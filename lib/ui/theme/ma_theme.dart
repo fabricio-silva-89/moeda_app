@@ -17,26 +17,26 @@ abstract class MaTheme {
       colorScheme: const ColorScheme(
         brightness: Brightness.light,
         primary: MaColors.primary,
-        onPrimary: Colors.white,
+        onPrimary: MaColors.white,
         primaryContainer: MaColors.primaryContainer,
         onPrimaryContainer: MaColors.onPrimaryContainer,
         secondary: MaColors.secondary,
-        onSecondary: Colors.white,
-        secondaryContainer: Color(0xFFDCFCE7),
-        onSecondaryContainer: Color(0xFF166534),
+        onSecondary: MaColors.white,
+        secondaryContainer: MaColors.secondaryLight,
+        onSecondaryContainer: MaColors.secondaryDarkStrong,
         tertiary: MaColors.success,
-        onTertiary: Colors.white,
+        onTertiary: MaColors.white,
         error: MaColors.error,
-        onError: Colors.white,
-        errorContainer: Color(0xFFFEE2E2),
-        onErrorContainer: Color(0xFF991B1B),
-        surface: Colors.white,
-        onSurface: Color(0xFF0F172A),
-        outline: Color(0xFFE5E7EB),
-        shadow: Colors.black12,
-        inverseSurface: Color(0xFF0F172A),
-        onInverseSurface: Colors.white,
-        inversePrimary: Color(0xFF93C5FD),
+        onError: MaColors.white,
+        errorContainer: MaColors.errorLight,
+        onErrorContainer: MaColors.errorDark,
+        surface: MaColors.surface,
+        onSurface: MaColors.textPrimary,
+        outline: MaColors.border,
+        shadow: MaColors.black12,
+        inverseSurface: MaColors.darkSurface,
+        onInverseSurface: MaColors.white,
+        inversePrimary: MaColors.inversePrimary,
         surfaceTint: MaColors.primary,
       ),
 
@@ -46,17 +46,17 @@ abstract class MaTheme {
       appBarTheme: const AppBarTheme(
         elevation: 0,
         centerTitle: false,
-        backgroundColor: Colors.white,
-        foregroundColor: Color(0xFF0F172A),
+        backgroundColor: MaColors.white,
+        foregroundColor: MaColors.textPrimary,
       ),
 
       // Cards
       cardTheme: CardTheme(
-        color: Colors.white,
+        color: MaColors.white,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: Color(0xFFE5E7EB)),
+          side: const BorderSide(color: MaColors.border),
         ),
       ),
 
@@ -64,7 +64,7 @@ abstract class MaTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: MaColors.primary,
-          foregroundColor: Colors.white,
+          foregroundColor: MaColors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -75,22 +75,22 @@ abstract class MaTheme {
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           backgroundColor: MaColors.primary,
-          foregroundColor: Colors.white,
+          foregroundColor: MaColors.white,
         ),
       ),
 
       // Inputs
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white,
+        fillColor: MaColors.white,
         contentPadding: const EdgeInsets.all(14),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+          borderSide: const BorderSide(color: MaColors.border),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE5E7EB)),
+          borderSide: const BorderSide(color: MaColors.border),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -99,14 +99,14 @@ abstract class MaTheme {
       ),
 
       // Divider
-      dividerColor: const Color(0xFFE5E7EB),
+      dividerColor: MaColors.border,
 
       // Text theme
       textTheme: const TextTheme(
         headlineLarge: TextStyle(fontWeight: FontWeight.bold),
         titleLarge: TextStyle(fontWeight: FontWeight.w600),
-        bodyLarge: TextStyle(color: Color(0xFF0F172A)),
-        bodyMedium: TextStyle(color: Color(0xFF475569)),
+        bodyLarge: TextStyle(color: MaColors.textPrimary),
+        bodyMedium: TextStyle(color: MaColors.textSecondary),
       ),
     );
   }
@@ -115,64 +115,56 @@ abstract class MaTheme {
   // 🌙 DARK THEME
   // =====================
   static ThemeData dark() {
-    const primary = Color(0xFF3B82F6);
-    const secondary = Color(0xFF22C55E);
-    const success = Color(0xFF4ADE80);
-    const error = Color(0xFFF87171);
-
-    const background = Color(0xFF020617);
-    const surface = Color(0xFF0F172A);
-
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
       colorScheme: const ColorScheme(
         brightness: Brightness.dark,
-        primary: primary,
-        onPrimary: Colors.white,
-        primaryContainer: Color(0xFF1E3A8A),
+        primary: MaColors.darkPrimary,
+        onPrimary: MaColors.white,
+        primaryContainer: MaColors.primaryContainerDark,
         onPrimaryContainer: MaColors.primaryContainer,
-        secondary: secondary,
-        onSecondary: Colors.black,
-        secondaryContainer: Color(0xFF14532D),
-        onSecondaryContainer: Color(0xFFDCFCE7),
-        tertiary: success,
-        onTertiary: Colors.black,
-        error: error,
-        onError: Colors.black,
-        errorContainer: Color(0xFF7F1D1D),
-        onErrorContainer: Color(0xFFFEE2E2),
-        surface: surface,
-        onSurface: Color(0xFFF8FAFC),
-        outline: Color(0xFF1F2937),
-        shadow: Colors.black,
-        inverseSurface: Colors.white,
-        onInverseSurface: Color(0xFF020617),
-        inversePrimary: Color(0xFF2563EB),
-        surfaceTint: primary,
+        secondary: MaColors.darkSecondary,
+        onSecondary: MaColors.black,
+        secondaryContainer: MaColors.secondaryDark,
+        onSecondaryContainer: MaColors.secondaryLight,
+        tertiary: MaColors.darkSuccess,
+        onTertiary: MaColors.black,
+        error: MaColors.darkError,
+        onError: MaColors.black,
+        errorContainer: MaColors.errorContainerDark,
+        onErrorContainer: MaColors.errorLight,
+        surface: MaColors.darkSurface,
+        onSurface: MaColors.darkTextPrimary,
+        outline: MaColors.darkBorder,
+        shadow: MaColors.black,
+        inverseSurface: MaColors.white,
+        onInverseSurface: MaColors.darkBackground,
+        inversePrimary: MaColors.darkInversePrimary,
+        surfaceTint: MaColors.darkPrimary,
       ),
-      scaffoldBackgroundColor: background,
+      scaffoldBackgroundColor: MaColors.darkBackground,
       appBarTheme: const AppBarTheme(
         elevation: 0,
-        backgroundColor: surface,
-        foregroundColor: Colors.white,
+        backgroundColor: MaColors.darkSurface,
+        foregroundColor: MaColors.white,
       ),
       cardTheme: CardTheme(
-        color: surface,
+        color: MaColors.darkSurface,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: Color(0xFF1F2937)),
+          side: const BorderSide(color: MaColors.darkBorder),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: const Color(0xFF111827),
+        fillColor: MaColors.darkCard,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
         ),
       ),
-      dividerColor: const Color(0xFF1F2937),
+      dividerColor: MaColors.darkBorder,
     );
   }
 }

@@ -3,7 +3,7 @@ class Asset {
   final String userId;
   final String name;
   final String type; // snake_case do name
-  final double percentage;
+  final int percentage;
   final DateTime createdAt;
   final DateTime? updatedAt;
 
@@ -23,7 +23,7 @@ class Asset {
       userId: map['userId'] ?? '',
       name: map['name'] ?? '',
       type: map['type'] ?? '',
-      percentage: (map['percentage'] ?? 0).toDouble(),
+      percentage: (map['percentage'] ?? 0).toInt(),
       createdAt: map['createdAt'] != null
           ? DateTime.parse(map['createdAt'])
           : DateTime.now(),
@@ -48,7 +48,7 @@ class Asset {
     String? userId,
     String? name,
     String? type,
-    double? percentage,
+    int? percentage,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {

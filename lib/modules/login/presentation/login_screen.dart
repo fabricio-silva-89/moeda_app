@@ -98,7 +98,7 @@ class LoginScreen extends GetView<LoginController> {
                                 strokeWidth: 2,
                               ),
                             )
-                          : const Text('Entrar com Email e Senha'),
+                          : const Text('Entrar'),
                     )),
               ),
               const SizedBox(height: 16.0),

@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 
 abstract class MaColors {
   // =====================
+  // ⚫ BASE
+  // =====================
+  static const white = Colors.white;
+  static const black = Colors.black;
+  static const black12 = Colors.black12;
+
+  // =====================
   // 🔵 PRIMARY (Brand)
   // =====================
   static const primary = Color(0xFF2563EB);
@@ -17,6 +24,8 @@ abstract class MaColors {
   static const secondary = Color(0xFF16A34A);
   static const secondaryLight = Color(0xFFDCFCE7);
   static const secondaryDark = Color(0xFF14532D);
+  static const secondaryDarkStrong = Color(0xFF166534);
+  static const darkSecondary = Color(0xFF22C55E);
 
   // =====================
   // ✅ SUCCESS
@@ -31,6 +40,7 @@ abstract class MaColors {
   static const error = Color(0xFFEF4444);
   static const errorLight = Color(0xFFFEE2E2);
   static const errorDark = Color(0xFF991B1B);
+  static const errorContainerDark = Color(0xFF7F1D1D);
 
   // =====================
   // ⚪ LIGHT NEUTRALS
@@ -53,6 +63,10 @@ abstract class MaColors {
 
   static const darkTextPrimary = Color(0xFFF8FAFC);
   static const darkTextSecondary = Color(0xFFCBD5F5);
+
+  // Inverse / utility
+  static const inversePrimary = Color(0xFF93C5FD);
+  static const darkInversePrimary = Color(0xFF2563EB);
 
   // Dark primaries
   static const darkPrimary = Color(0xFF3B82F6);

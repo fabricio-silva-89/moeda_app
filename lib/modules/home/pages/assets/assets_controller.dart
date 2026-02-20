@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../models/asset_model.dart';
 import '../../../../services/asset_service.dart';
 import '../../../../services/auth_service.dart';
+import '../../../../ui/helpers/helpers.dart';
 
-class AssetsController extends GetxController {
+class AssetsController extends GetxController with UIMessagesManager {
   final AuthService _authService = Get.find<AuthService>();
   final AssetService _assetService = Get.find<AssetService>();
 
@@ -73,7 +73,7 @@ class AssetsController extends GetxController {
       await _assetService.createAsset(asset);
       await _loadAssets();
     } catch (e) {
-      _errorMessage.value = e.toString();
+      showError(message: 'Erro ao criar asset: $e');
     }
   }
 
@@ -83,8 +83,8 @@ class AssetsController extends GetxController {
   }
 
   /// Calcular soma dos percentuais
-  double _calculateTotalPercentage() {
-    return _assets.fold(0.0, (sum, asset) => sum + asset.percentage);
+  int _calculateTotalPercentage() {
+    return _assets.fold(0, (sum, asset) => sum + asset.percentage);
   }
 
   /// Validar se a soma dos percentuais é 100
@@ -95,17 +95,16 @@ class AssetsController extends GetxController {
   }
 
   /// Atualizar percentage de um asset
-  Future<void> updateAssetPercentage(String assetId, double percentage) async {
+  Future<void> updateAssetPercentage(String assetId, int percentage) async {
     try {
       final assetIndex = _assets.indexWhere((a) => a.id == assetId);
       if (assetIndex != -1) {
         final asset = _assets[assetIndex];
         final updatedAsset = asset.copyWith(percentage: percentage);
-        await _assetService.updateAsset(updatedAsset);
         _assets[assetIndex] = updatedAsset;
       }
     } catch (e) {
-      _errorMessage.value = e.toString();
+      showError(message: 'Erro ao atualizar asset: $e');
     }
   }
 
@@ -115,8 +114,9 @@ class AssetsController extends GetxController {
     // Validar se a soma dos percentuais é 100
     if (!_isValidAllocation()) {
       final total = _calculateTotalPercentage();
-      _errorMessage.value =
-          'A soma dos percentuais deve ser 100%. Atual: ${total.toStringAsFixed(1)}%';
+      showError(
+        message: 'A soma dos percentuais deve ser 100%. Atual: $total%',
+      );
       return;
     }
 
@@ -128,16 +128,11 @@ class AssetsController extends GetxController {
         await _assetService.updateAsset(asset);
       }
 
-      Get.snackbar(
-        'Sucesso',
-        'Configuração de ativos salva com sucesso!',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-        duration: const Duration(seconds: 2),
+      showMessage(
+        message: 'Configuração de ativos salva com sucesso!',
       );
     } catch (e) {
-      _errorMessage.value = 'Erro ao salvar configuração: $e';
+      showError(message: 'Erro ao salvar configuração: $e');
     } finally {
       _isSaving.value = false;
     }

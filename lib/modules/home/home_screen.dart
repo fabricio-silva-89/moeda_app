@@ -30,16 +30,6 @@ class HomeScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Moeda App'),
-      //   elevation: 0,
-      //   actions: [
-      //     IconButton(
-      //       icon: const Icon(Icons.logout),
-      //       onPressed: () => controller.logout(context),
-      //     )
-      //   ],
-      // ),
       body: Obx(() {
         return controller.pages[controller.selectedIndex.value];
       }),

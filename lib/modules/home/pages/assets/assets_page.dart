@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../ui/theme/ma_build_context_extension.dart';
 import 'assets_controller.dart';
 
 class AssetsPage extends GetView<AssetsController> {
@@ -12,7 +13,7 @@ class AssetsPage extends GetView<AssetsController> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Adicionar Novo Ativo'),
+        title: const Text('Adicionar novo ativo'),
         content: TextField(
           controller: nameController,
           decoration: const InputDecoration(
@@ -25,7 +26,7 @@ class AssetsPage extends GetView<AssetsController> {
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancelar'),
           ),
-          TextButton(
+          ElevatedButton(
             onPressed: () {
               if (nameController.text.isNotEmpty) {
                 controller.createAsset(nameController.text.trim());
@@ -46,7 +47,7 @@ class AssetsPage extends GetView<AssetsController> {
       builder: (controller) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Configurar Ativos'),
+            title: const Text('Configurar ativos'),
             actions: [
               IconButton(
                 icon: const Icon(Icons.add),
@@ -100,49 +101,29 @@ class AssetsPage extends GetView<AssetsController> {
               );
             }
 
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Alocação de Contribuições',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
                   const SizedBox(height: 24),
-                  ...controller.assets.map((asset) {
-                    return Column(
-                      children: [
-                        AllocationSlider(
-                          label: asset.name,
-                          value: asset.percentage,
-                          onChanged: (value) =>
-                              controller.updateAssetPercentage(
-                            asset.id!,
-                            value,
-                          ),
-                          color: _getColorForAssetType(asset.type),
-                        ),
-                        const SizedBox(height: 16),
-                      ],
-                    );
-                  }),
                   Obx(() {
                     final total = controller.assets.fold(
-                      0.0,
+                      0,
                       (sum, asset) => sum + asset.percentage,
                     );
-                    final isValid = (total - 100).abs() < 0.01;
+                    final isValid = (total == 100);
 
                     return Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: isValid
-                            ? Colors.green.withOpacity(0.1)
-                            : Colors.red.withOpacity(0.1),
+                            ? context.colors.success.withOpacity(0.1)
+                            : context.colors.error.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
                         border: Border.all(
-                          color: isValid ? Colors.green : Colors.red,
+                          color: isValid
+                              ? context.colors.success
+                              : context.colors.error,
                           width: 1,
                         ),
                       ),
@@ -153,22 +134,49 @@ class AssetsPage extends GetView<AssetsController> {
                             'Total de Alocação',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              color: isValid ? Colors.green : Colors.red,
+                              color: isValid
+                                  ? context.colors.success
+                                  : context.colors.error,
                             ),
                           ),
                           Text(
-                            '${total.toStringAsFixed(1)}%',
+                            '$total%',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
-                              color: isValid ? Colors.green : Colors.red,
+                              color: isValid
+                                  ? context.colors.success
+                                  : context.colors.error,
                             ),
                           ),
                         ],
                       ),
                     );
                   }),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(children: [
+                        ...controller.assets.map((asset) {
+                          return Column(
+                            children: [
+                              AllocationSlider(
+                                label: asset.name,
+                                value: asset.percentage,
+                                onChanged: (value) =>
+                                    controller.updateAssetPercentage(
+                                  asset.id!,
+                                  value,
+                                ),
+                                color: _getColorForAssetType(asset.type),
+                              ),
+                              const SizedBox(height: 16),
+                            ],
+                          );
+                        })
+                      ]),
+                    ),
+                  ),
                 ],
               ),
             );
@@ -211,8 +219,8 @@ class AssetsPage extends GetView<AssetsController> {
 
 class AllocationSlider extends StatelessWidget {
   final String label;
-  final double value;
-  final Function(double) onChanged;
+  final int value;
+  final Function(int) onChanged;
   final Color color;
 
   const AllocationSlider({
@@ -232,11 +240,13 @@ class AllocationSlider extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
-            Text('${value.toStringAsFixed(1)}%',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: color,
-                )),
+            Text(
+              '$value%',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 8),
@@ -246,10 +256,11 @@ class AllocationSlider extends StatelessWidget {
             thumbColor: color,
           ),
           child: Slider(
-            value: value,
-            onChanged: onChanged,
+            value: value.toDouble(),
+            onChanged: (double newValue) => onChanged(newValue.round()),
             min: 0,
             max: 100,
+            divisions: 100,
           ),
         ),
       ],

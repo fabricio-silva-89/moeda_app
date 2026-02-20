@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../ma_navigation.dart';
 import '../../../ma_routes.dart';
+import '../../../ui/helpers/helpers.dart';
 import 'signup_controller.dart';
 
-class SignupScreen extends GetView<SignupController> {
+class SignupScreen extends GetView<SignupController> with UIMessagesManager {
   const SignupScreen({super.key});
 
   Future<void> _handleSignup(
@@ -24,12 +26,9 @@ class SignupScreen extends GetView<SignupController> {
       if (success) {
         Get.offNamed(MaRoutes.login);
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Cadastro realizado com sucesso! Faça login com suas credenciais.',
-            ),
-          ),
+        showMessage(
+          message: 'Cadastro realizado com sucesso! '
+              'Faça login com suas credenciais.',
         );
       }
     }
@@ -170,7 +169,7 @@ class SignupScreen extends GetView<SignupController> {
                 Center(
                   child: TextButton(
                     onPressed: () {
-                      Get.offNamed(MaRoutes.login);
+                      MaNavigation.navigate(route: MaRoutes.login);
                     },
                     child: const Text('Voltar para Login'),
                   ),

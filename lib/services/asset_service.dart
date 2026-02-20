@@ -66,6 +66,7 @@ class AssetService {
       await _firestore.collection(assetsCollection).doc(asset.id).update({
         'name': asset.name,
         'type': asset.type,
+        'percentage': asset.percentage,
         'updatedAt': DateTime.now().toIso8601String(),
       });
     } on FirebaseException catch (e) {
