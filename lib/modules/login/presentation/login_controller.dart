@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../models/user_model.dart';
+import '../../../core/domain/models/user_model.dart';
 import '../domain/use_case/login_use_case.dart';
 
 class LoginController extends GetxController {

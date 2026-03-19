@@ -43,7 +43,12 @@ class AssetsPage extends GetView<AssetsController> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AssetsController>(
-      init: AssetsController(),
+      init: AssetsController(
+        Get.find(),
+        Get.find(),
+        Get.find(),
+        Get.find(),
+      ),
       builder: (controller) {
         return Scaffold(
           appBar: AppBar(

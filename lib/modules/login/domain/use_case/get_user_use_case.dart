@@ -1,4 +1,4 @@
-import '../../../../models/user_model.dart';
+import '../../../../core/domain/models/user_model.dart';
 import '../repository/login_repository.dart';
 
 class GetUserUseCase {

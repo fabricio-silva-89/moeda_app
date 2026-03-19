@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../../../core/domain/models/user_model.dart';
 import '../../../../core/extensions/auth_exception.dart';
 import '../../../../core/utils/firebase_collections.dart';
-import '../../../../models/user_model.dart';
 import '../../domain/repository/login_repository.dart';
 
 class LoginRepositoryImpl implements LoginRepository {

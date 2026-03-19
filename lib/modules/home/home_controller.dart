@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/domain/use_cases/logout_use_case.dart';
 import '../../ma_routes.dart';
-import '../../services/auth_service.dart';
 import 'pages/assets/assets_page.dart';
 import 'pages/contribuition/contribution_page.dart';
 import 'pages/wallet/wallet_page.dart';
 
 class HomeController extends GetxController {
-  final _authService = Get.find<AuthService>();
+  final LogoutUseCase _logoutUseCase;
+
+  HomeController(this._logoutUseCase);
 
   final pages = [
     const WalletPage(),
@@ -43,7 +45,7 @@ class HomeController extends GetxController {
 
     if (confirmed == true) {
       try {
-        await _authService.logout();
+        await _logoutUseCase.execute();
         Get.offAllNamed(MaRoutes.login);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(

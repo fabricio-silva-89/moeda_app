@@ -1,16 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../models/asset_model.dart';
+import '../../../../../../core/utils/firebase_collections.dart';
+import '../../domain/models/asset_model.dart';
+import '../../domain/repositories/asset_repository.dart';
 
-class AssetService {
+class AssetRepositoryImpl implements AssetRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  static const String assetsCollection = 'assets';
 
   /// Criar novo asset
-  Future<String> createAsset(Asset asset) async {
+  @override
+  Future<String> createAsset(AssetModel asset) async {
     try {
-      final docRef =
-          await _firestore.collection(assetsCollection).add(asset.toMap());
+      final docRef = await _firestore
+          .collection(FirebaseCollections.assets)
+          .add(asset.toMap());
       return docRef.id;
     } on FirebaseException catch (e) {
       throw 'Erro ao criar asset: ${e.message}';
@@ -18,12 +21,14 @@ class AssetService {
   }
 
   /// Obter asset por ID
-  Future<Asset?> getAsset(String id) async {
+  @override
+  Future<AssetModel?> getAsset(String id) async {
     try {
-      final doc = await _firestore.collection(assetsCollection).doc(id).get();
+      final doc =
+          await _firestore.collection(FirebaseCollections.assets).doc(id).get();
 
       if (doc.exists) {
-        return Asset.fromMap(doc.data() as Map<String, dynamic>, id);
+        return AssetModel.fromMap(doc.data() as Map<String, dynamic>, id);
       }
       return null;
     } on FirebaseException catch (e) {
@@ -32,15 +37,16 @@ class AssetService {
   }
 
   /// Obter todos os assets do usuário
-  Future<List<Asset>> getUserAssets(String userId) async {
+  @override
+  Future<List<AssetModel>> getUserAssets(String userId) async {
     try {
       final snapshot = await _firestore
-          .collection(assetsCollection)
+          .collection(FirebaseCollections.assets)
           .where('userId', isEqualTo: userId)
           .get();
 
       return snapshot.docs
-          .map((doc) => Asset.fromMap(doc.data(), doc.id))
+          .map((doc) => AssetModel.fromMap(doc.data(), doc.id))
           .toList();
     } on FirebaseException catch (e) {
       throw 'Erro ao obter assets: ${e.message}';
@@ -48,25 +54,32 @@ class AssetService {
   }
 
   /// Obter stream de assets do usuário
-  Stream<List<Asset>> getUserAssetsStream(String userId) {
+  @override
+  Stream<List<AssetModel>> getUserAssetsStream(String userId) {
     return _firestore
-        .collection(assetsCollection)
+        .collection(FirebaseCollections.assets)
         .where('userId', isEqualTo: userId)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs
-          .map((doc) => Asset.fromMap(doc.data(), doc.id))
+          .map((doc) => AssetModel.fromMap(doc.data(), doc.id))
           .toList();
     });
   }
 
-  /// Atualizar nome e tipo do asset
-  Future<void> updateAsset(Asset asset) async {
+  /// Atualizar asset
+  @override
+  Future<void> updateAsset(AssetModel asset) async {
     try {
-      await _firestore.collection(assetsCollection).doc(asset.id).update({
+      await _firestore
+          .collection(FirebaseCollections.assets)
+          .doc(asset.id)
+          .update({
         'name': asset.name,
         'type': asset.type,
         'percentage': asset.percentage,
+        'currentValue': asset.currentValue,
+        'score': asset.score,
         'updatedAt': DateTime.now().toIso8601String(),
       });
     } on FirebaseException catch (e) {
@@ -75,9 +88,10 @@ class AssetService {
   }
 
   /// Deletar asset
+  @override
   Future<void> deleteAsset(String id) async {
     try {
-      await _firestore.collection(assetsCollection).doc(id).delete();
+      await _firestore.collection(FirebaseCollections.assets).doc(id).delete();
     } on FirebaseException catch (e) {
       throw 'Erro ao deletar asset: ${e.message}';
     }

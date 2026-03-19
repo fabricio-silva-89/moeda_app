@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../services/auth_service.dart';
 import '../login/presentation/login_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -16,8 +15,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authService = AuthService();
-    final user = authService.currentUser;
+    // final authService = AuthService();
+    // final user = authService.currentUser;
 
     return Scaffold(
       appBar: AppBar(
@@ -33,47 +32,47 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            Card(
+            const Card(
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
-                        CircleAvatar(
-                          radius: 32,
-                          backgroundColor: Colors.blue[100],
-                          child: Text(
-                            user?.displayName?.isNotEmpty == true
-                                ? user!.displayName![0].toUpperCase()
-                                : 'U',
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
+                        // CircleAvatar(
+                        //   radius: 32,
+                        //   backgroundColor: Colors.blue[100],
+                        //   child: Text(
+                        //     user?.displayName?.isNotEmpty == true
+                        //         ? user!.displayName![0].toUpperCase()
+                        //         : 'U',
+                        //     style: const TextStyle(
+                        //       fontSize: 24,
+                        //       fontWeight: FontWeight.bold,
+                        //     ),
+                        //   ),
+                        // ),
+                        SizedBox(width: 16),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                user?.displayName ?? 'Usuário',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                user?.email ?? 'email@example.com',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey,
-                                ),
-                              ),
+                              // Text(
+                              //   user?.displayName ?? 'Usuário',
+                              //   style: const TextStyle(
+                              //     fontSize: 16,
+                              //     fontWeight: FontWeight.bold,
+                              //   ),
+                              // ),
+                              // const SizedBox(height: 4),
+                              // Text(
+                              //   user?.email ?? 'email@example.com',
+                              //   style: const TextStyle(
+                              //     fontSize: 12,
+                              //     color: Colors.grey,
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -155,8 +154,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     if (confirmed == true) {
       try {
-        final authService = AuthService();
-        await authService.logout();
+        // final authService = AuthService();
+        // await authService.logout();
         if (mounted) {
           Navigator.pushReplacement(
             context,

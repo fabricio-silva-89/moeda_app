@@ -3,14 +3,14 @@ class UserModel {
   final String email;
   final String name;
   final String? photoUrl;
-  final DateTime createdAt;
+  final DateTime? createdAt;
 
   UserModel({
     required this.uid,
     required this.email,
     required this.name,
     this.photoUrl,
-    required this.createdAt,
+    this.createdAt,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map, String uid) {
@@ -19,9 +19,8 @@ class UserModel {
       email: map['email'] ?? '',
       name: map['name'] ?? '',
       photoUrl: map['photoUrl'],
-      createdAt: map['createdAt'] != null
-          ? DateTime.parse(map['createdAt'])
-          : DateTime.now(),
+      createdAt:
+          map['createdAt'] != null ? DateTime.parse(map['createdAt']) : null,
     );
   }
 
@@ -30,7 +29,8 @@ class UserModel {
       'email': email,
       'name': name,
       'photoUrl': photoUrl,
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt':
+          createdAt?.toIso8601String() ?? DateTime.now().toIso8601String(),
     };
   }
 }

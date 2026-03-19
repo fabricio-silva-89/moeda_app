@@ -1,4 +1,4 @@
-import '../../../../models/user_model.dart';
+import '../../../../core/domain/models/user_model.dart';
 
 abstract interface class LoginRepository {
   Future<String?> login(String email, String password);

@@ -1,28 +1,51 @@
 import 'package:get/get.dart';
 
-import '../../../../models/asset_model.dart';
-import '../../../../services/asset_service.dart';
-import '../../../../services/auth_service.dart';
+import '../../../../core/domain/models/user_model.dart';
+import '../../../../core/domain/use_cases/get_current_user_use_case.dart';
 import '../../../../ui/helpers/helpers.dart';
+import 'domain/models/asset_model.dart';
+import 'domain/use_cases/create_asset_use_case.dart';
+import 'domain/use_cases/get_user_assets_use_case.dart';
+import 'domain/use_cases/update_asset_use_case.dart';
 
 class AssetsController extends GetxController with UIMessagesManager {
-  final AuthService _authService = Get.find<AuthService>();
-  final AssetService _assetService = Get.find<AssetService>();
+  final CreateAssetUseCase _createAssetUseCase;
+  final GetUserAssetsUseCase _getUserAssetsUseCase;
+  final UpdateAssetUseCase _updateAssetUseCase;
+  final GetCurrentUserUseCase _getCurrentUserUseCase;
 
-  final _assets = <Asset>[].obs;
+  AssetsController(
+    this._createAssetUseCase,
+    this._getUserAssetsUseCase,
+    this._updateAssetUseCase,
+    this._getCurrentUserUseCase,
+  );
+
+  final _assets = <AssetModel>[].obs;
   final _isLoading = false.obs;
   final _errorMessage = Rxn<String>();
   final _isSaving = false.obs;
 
-  List<Asset> get assets => _assets.toList();
+  List<AssetModel> get assets => _assets.toList();
   bool get isLoading => _isLoading.value;
   String? get errorMessage => _errorMessage.value;
   bool get isSaving => _isSaving.value;
 
+  UserModel? _currentUser;
+
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    await _loadCurrentUser();
     _loadAssets();
+  }
+
+  Future<void> _loadCurrentUser() async {
+    try {
+      _currentUser = await _getCurrentUserUseCase.execute();
+    } catch (e) {
+      showError(message: 'Erro ao carregar usuário: $e');
+    }
   }
 
   /// Carregar assets do usuário logado
@@ -31,12 +54,12 @@ class AssetsController extends GetxController with UIMessagesManager {
     _errorMessage.value = null;
 
     try {
-      final userId = _authService.currentUser?.uid;
+      final userId = _currentUser?.uid;
       if (userId == null) {
         throw Exception('Usuário não autenticado');
       }
 
-      final userAssets = await _assetService.getUserAssets(userId);
+      final userAssets = await _getUserAssetsUseCase.execute(userId);
       _assets.assignAll(userAssets);
     } catch (e) {
       _errorMessage.value = e.toString();
@@ -56,13 +79,13 @@ class AssetsController extends GetxController with UIMessagesManager {
   /// Criar novo asset
   Future<void> createAsset(String name) async {
     try {
-      final userId = _authService.currentUser?.uid;
+      final userId = _currentUser?.uid;
       if (userId == null) {
         throw Exception('Usuário não autenticado');
       }
 
       final now = DateTime.now();
-      final asset = Asset(
+      final asset = AssetModel(
         userId: userId,
         name: name,
         type: _toSnakeCase(name),
@@ -70,7 +93,7 @@ class AssetsController extends GetxController with UIMessagesManager {
         createdAt: now,
       );
 
-      await _assetService.createAsset(asset);
+      await _createAssetUseCase.execute(asset);
       await _loadAssets();
     } catch (e) {
       showError(message: 'Erro ao criar asset: $e');
@@ -125,7 +148,7 @@ class AssetsController extends GetxController with UIMessagesManager {
     try {
       // Atualizar todos os assets no Firestore
       for (final asset in _assets) {
-        await _assetService.updateAsset(asset);
+        await _updateAssetUseCase.execute(asset);
       }
 
       showMessage(
