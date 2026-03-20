@@ -12,7 +12,7 @@ class AssetRepositoryImpl implements AssetRepository {
   Future<String> createAsset(AssetModel asset) async {
     try {
       final docRef = await _firestore
-          .collection(FirebaseCollections.assets)
+          .collection(FirebaseCollections.investimentsType)
           .add(asset.toMap());
       return docRef.id;
     } on FirebaseException catch (e) {
@@ -24,8 +24,10 @@ class AssetRepositoryImpl implements AssetRepository {
   @override
   Future<AssetModel?> getAsset(String id) async {
     try {
-      final doc =
-          await _firestore.collection(FirebaseCollections.assets).doc(id).get();
+      final doc = await _firestore
+          .collection(FirebaseCollections.investimentsType)
+          .doc(id)
+          .get();
 
       if (doc.exists) {
         return AssetModel.fromMap(doc.data() as Map<String, dynamic>, id);
@@ -41,7 +43,7 @@ class AssetRepositoryImpl implements AssetRepository {
   Future<List<AssetModel>> getUserAssets(String userId) async {
     try {
       final snapshot = await _firestore
-          .collection(FirebaseCollections.assets)
+          .collection(FirebaseCollections.investimentsType)
           .where('userId', isEqualTo: userId)
           .get();
 
@@ -57,7 +59,7 @@ class AssetRepositoryImpl implements AssetRepository {
   @override
   Stream<List<AssetModel>> getUserAssetsStream(String userId) {
     return _firestore
-        .collection(FirebaseCollections.assets)
+        .collection(FirebaseCollections.investimentsType)
         .where('userId', isEqualTo: userId)
         .snapshots()
         .map((snapshot) {
@@ -72,7 +74,7 @@ class AssetRepositoryImpl implements AssetRepository {
   Future<void> updateAsset(AssetModel asset) async {
     try {
       await _firestore
-          .collection(FirebaseCollections.assets)
+          .collection(FirebaseCollections.investimentsType)
           .doc(asset.id)
           .update({
         'name': asset.name,
@@ -91,7 +93,10 @@ class AssetRepositoryImpl implements AssetRepository {
   @override
   Future<void> deleteAsset(String id) async {
     try {
-      await _firestore.collection(FirebaseCollections.assets).doc(id).delete();
+      await _firestore
+          .collection(FirebaseCollections.investimentsType)
+          .doc(id)
+          .delete();
     } on FirebaseException catch (e) {
       throw 'Erro ao deletar asset: ${e.message}';
     }

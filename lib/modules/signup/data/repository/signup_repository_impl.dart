@@ -18,7 +18,7 @@ class SignupRepositoryImpl implements SignupRepository {
   }) async {
     try {
       await _firestore
-          .collection(FirebaseCollections.assets)
+          .collection(FirebaseCollections.investimentsType)
           .add(params.toMap());
     } on FirebaseException catch (e) {
       throw Exception('Erro ao criar asset: ${e.message}');
